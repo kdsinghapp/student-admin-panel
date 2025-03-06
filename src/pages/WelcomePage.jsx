@@ -26,7 +26,7 @@ const WelcomePage = () => {
                       type="email"
                       className="form-control"
                       id="first_field"
-                      placeholder="Email Email"
+                      placeholder="Email"
                       aria-label="Email Address"
                     />
                   </div>
