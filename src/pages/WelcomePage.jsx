@@ -1,7 +1,16 @@
 import React from "react";
 import logo from "../assets/assets/img/upbg.png";
+import { Link, useNavigate } from "react-router-dom";
+import bg from "../assets/assets/logo.png";
 
 const WelcomePage = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/");
+  };
+
   return (
     <div className="login-30 tab-box" style={{ overflow: "hidden" }}>
       <div className="container-fluid">
@@ -10,7 +19,7 @@ const WelcomePage = () => {
             <div className="login-inner-form">
               <div className="details">
                 <h1 className="mb-5">Welcome Back</h1>
-                <form action="dashboard.html" method="post">
+                <form onSubmit={handleSubmit}>
                   <div className="form-group">
                     <input
                       name="email"
@@ -53,7 +62,7 @@ const WelcomePage = () => {
                   <div className="text-center">
                     <label className="form-check-label" htmlFor="rememberme">
                       If you don't have an account, Please{" "}
-                      <a href="sign-up.html">Sign Up Now</a>
+                      <Link to="/">Sign Up Now</Link>
                     </label>
                   </div>
                 </form>
@@ -64,14 +73,11 @@ const WelcomePage = () => {
             <div id="bg">
               <h5 className="text-white">Sign In</h5>
             </div>
-            <img
-              // src="assets/img/upbg.png"
-              src={upbg.png}
-              style={{ position: "absolute", right: "20%" }}
-            />
+            <img src={logo} style={{ position: "absolute", right: "20%" }} />
             <div className="text-center">
               <img
-                src="assets/logo.png"
+                // src="assets/logo.png"
+                src={bg}
                 alt="logo"
                 style={{ width: 250, marginBottom: 50 }}
               />

@@ -144,7 +144,7 @@ const Sidebar = () => {
                 location.pathname === "/signup" ? "active" : ""
               }`}
             >
-              <Link to="/signup" className="nav-link">
+              <Link to="/signin" className="nav-link">
                 <i className="flaticon-turn-off" />
                 <span>Log Out</span>
               </Link>
