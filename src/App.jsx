@@ -14,6 +14,7 @@ import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 import WelcomePage from "./pages/WelcomePage";
 import AddExternalAssesment from "./components/ExternalAssesments/AddExternalAssesment";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -29,10 +30,14 @@ function App() {
         <Route path="/grade" element={<Grade />} />
         <Route path="/internal-assessment" element={<InternalAssesment />} />
         <Route path="/external-assessment" element={<ExternalAssesment />} />
-        <Route path="/external-assessment/add-external-assessment" element={<AddExternalAssesment />} />
+        <Route
+          path="/external-assessment/add-external-assessment"
+          element={<AddExternalAssesment />}
+        />
         <Route path="/reports" element={<Reports />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/signin" element={<WelcomePage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
