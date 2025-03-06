@@ -1,4 +1,5 @@
 import React from "react";
+import logo from "../assets/assets/img/upbg.png";
 
 const WelcomePage = () => {
   return (
@@ -64,7 +65,8 @@ const WelcomePage = () => {
               <h5 className="text-white">Sign In</h5>
             </div>
             <img
-              src="assets/img/upbg.png"
+              // src="assets/img/upbg.png"
+              src={upbg.png}
               style={{ position: "absolute", right: "20%" }}
             />
             <div className="text-center">

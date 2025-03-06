@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/img/logo.png";
 import admin from "../assets/img/figure/admin.jpg";
@@ -6,6 +6,8 @@ import admin from "../assets/img/figure/admin.jpg";
 const Headers = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -14,6 +16,22 @@ const Headers = () => {
   const toggleMobileNav = () => {
     setIsMobileNavOpen(!isMobileNavOpen);
   };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="navbar navbar-expand-md header-menu-one bg-light">
@@ -76,9 +94,7 @@ const Headers = () => {
             <a
               className="navbar-nav-link dropdown-toggle"
               href="#"
-              role="button"
-              data-toggle="dropdown"
-              aria-expanded="false"
+              onClick={toggleDropdown}
             >
               <div className="admin-img mr-3">
                 <img src={admin} alt="Admin" />
@@ -88,27 +104,29 @@ const Headers = () => {
                 <span>Admin</span>
               </div>
             </a>
-            <div className="dropdown-menu dropdown-menu-right">
-              <div className="item-header">
-                <h6 className="item-title">Steven Zone</h6>
+            {isDropdownOpen && (
+              <div className="dropdown-menu dropdown-menu-right show">
+                <div className="item-header">
+                  <h6 className="item-title">John Doe</h6>
+                </div>
+                <div className="item-content">
+                  <ul className="settings-list">
+                    <li>
+                      <Link to="/profile">
+                        <i className="flaticon-user" />
+                        My Profile
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/signin">
+                        <i className="flaticon-turn-off" />
+                        Log Out
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div className="item-content">
-                <ul className="settings-list">
-                  <li>
-                    <a href="#">
-                      <i className="flaticon-user" />
-                      My Profile
-                    </a>
-                  </li>
-                  <li>
-                    <a href="login.html">
-                      <i className="flaticon-turn-off" />
-                      Log Out
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+            )}
           </li>
         </ul>
       </div>
