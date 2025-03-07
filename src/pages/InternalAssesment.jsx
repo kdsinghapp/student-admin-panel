@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import * as bootstrap from "bootstrap";
 import Headers from "../components/Headers";
 import { Link } from "react-router-dom";
 import logo from "../assets/img/logo.png";
 import Sidebar from "../components/Sidebar";
+import DownloadTemplate from "../components/DownloadTemplate";
 
 const InternalAssesment = () => {
   const [data, setData] = useState([
@@ -131,13 +134,18 @@ const InternalAssesment = () => {
                 </span>
               </div>
               <div>
-                <button
-                  className="btn btn-purple modal-trigger mb-0"
-                  data-toggle="modal"
-                  data-target="#download"
-                >
-                  <i className="fas fa-download" /> Template
-                </button>
+              <button
+  className="btn btn-purple modal-trigger"
+  onClick={() => {
+    const modalElement = document.getElementById("download");
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }}
+>
+  <i className="fas fa-download" /> Template
+</button>
                 <button
                   className="btn btn-purple modal-trigger mb-0"
                   data-toggle="modal"
@@ -210,7 +218,7 @@ const InternalAssesment = () => {
         </div>
         {/* Page Area End Here */}
       </div>
-      <div
+      {/* <div
         className="modal fade"
         id="download"
         tabIndex={-1}
@@ -259,7 +267,9 @@ const InternalAssesment = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+
+      <DownloadTemplate/>
       <div
         className="modal fade"
         id="upload"

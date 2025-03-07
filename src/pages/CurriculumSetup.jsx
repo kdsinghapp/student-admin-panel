@@ -1,4 +1,6 @@
 import React from "react";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import * as bootstrap from "bootstrap";
 import Headers from "../components/Headers";
 import logo from "../assets/img/logo.png";
 import { Link } from "react-router-dom";
@@ -15,7 +17,7 @@ import laptop from "../assets/assets/icon/laptop.png";
 import language from "../assets/assets/icon/language.png";
 import add from "../assets/assets/icon/add.png";
 import Sidebar from "../components/Sidebar";
-
+import DownloadTemplate from '../components/DownloadTemplate'
 const CurriculumSetup = () => {
   return (
     <>
@@ -29,13 +31,18 @@ const CurriculumSetup = () => {
             <div className="breadcrumbs-area d-flex justify-content-between">
               <h3>Add Curriculum Mapping</h3>
               <div>
-                <button
-                  className="btn btn-purple modal-trigger mb-0"
-                  data-toggle="modal"
-                  data-target="#download"
-                >
-                  <i className="fas fa-download" /> Template
-                </button>
+              <button
+  className="btn btn-purple modal-trigger"
+  onClick={() => {
+    const modalElement = document.getElementById("download");
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }}
+>
+  <i className="fas fa-download" /> Template
+</button>
                 <button
                   className="btn btn-purple modal-trigger mb-0"
                   data-toggle="modal"
@@ -296,9 +303,18 @@ const CurriculumSetup = () => {
                     {/* Add/Curriculum Mapping Button */}
                     <div className="row mb-4">
                       <div className="col-lg-12 text-center">
-                        <button className="btn btn-primary add-curriculum-mapping-btn">
-                          Add Curriculum Mapping
-                        </button>
+                      <button
+  className="btn btn-purple modal-trigger"
+  onClick={() => {
+    const modalElement = document.getElementById("download");
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }}
+>
+  <i className="fas fa-download" /> Template
+                      </button>
                       </div>
                     </div>
                     {/* Grade Mapping Table */}
@@ -361,7 +377,7 @@ const CurriculumSetup = () => {
         </div>
       </div>
       {/* Page Area End Here */}
-      <div
+      {/* <div
         className="modal fade"
         id="download"
         tabIndex={-1}
@@ -410,7 +426,9 @@ const CurriculumSetup = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+
+      <DownloadTemplate/>
       <div
         className="modal fade"
         id="upload"

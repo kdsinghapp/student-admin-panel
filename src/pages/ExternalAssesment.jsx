@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import * as bootstrap from "bootstrap";
 import Headers from "../components/Headers";
 import { Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import UploadExternal from "../components/ExternalAssesments/UploadExternal";
 import TemplateExternal from "../components/ExternalAssesments/TemplateExternal";
+import DownloadTemplate from "../components/DownloadTemplate";
 
 const ExternalAssesment = () => {
   const [showTemplateModal, setShowTemplateModal] = useState(false);
@@ -132,14 +135,18 @@ const ExternalAssesment = () => {
                 </span>
               </div>
               <div>
-                <button
-                  className="btn btn-purple modal-trigger mb-0"
-                  data-toggle="modal"
-                  data-target="#download"
-                  onClick={() => setShowTemplateModal(true)}
-                >
-                  <i className="fas fa-download" /> Template
-                </button>
+              <button
+  className="btn btn-purple modal-trigger"
+  onClick={() => {
+    const modalElement = document.getElementById("download");
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }}
+>
+  <i className="fas fa-download" /> Template
+</button>
                 {/* <button
                   className="btn btn-purple modal-trigger mb-0"
                   data-toggle="modal"
@@ -216,7 +223,7 @@ const ExternalAssesment = () => {
           </div>
         </div>
       </div>
-      <TemplateExternal />
+      <DownloadTemplate />
       <UploadExternal />
     </>
   );

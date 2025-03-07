@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+
 import Headers from "../components/Headers";
 import studentId from "../assets/assets/icon/fi_list.png";
 import studentPh from "../assets/assets/icon/ph_student.png";
@@ -8,7 +10,8 @@ import studentProg from "../assets/assets/icon/tabler_progress.png";
 import studentStat from "../assets/assets/icon/lets-icons_status.png";
 import studentEdit from "../assets/assets/icon/tabler_edit.png";
 import Sidebar from "../components/Sidebar";
-
+import * as bootstrap from "bootstrap";
+import DownloadTemplate from "../components/DownloadTemplate";
 const Students = () => {
   const [students, setStudents] = useState([
     {
@@ -120,10 +123,15 @@ const Students = () => {
                 </span>
               </div>
               <div>
-                <button
-                  className="btn btn-purple modal-trigger mb-0"
-                  data-toggle="modal"
-                  data-target="#download"
+                              <button
+                  className="btn btn-purple modal-trigger"
+                  onClick={() => {
+                    const modalElement = document.getElementById("download");
+                    if (modalElement) {
+                      const modal = new bootstrap.Modal(modalElement);
+                      modal.show();
+                    }
+                  }}
                 >
                   <i className="fas fa-download" /> Template
                 </button>
@@ -219,7 +227,7 @@ const Students = () => {
         </div>
         {/* Page Area End Here */}
       </div>
-      <div
+      {/* <div
         className="modal fade"
         id="download"
         tabIndex={-1}
@@ -268,7 +276,8 @@ const Students = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+      <DownloadTemplate/>
       <div
         className="modal fade"
         id="upload"

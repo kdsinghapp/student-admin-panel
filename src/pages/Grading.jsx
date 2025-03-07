@@ -1,8 +1,11 @@
 import React from "react";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import * as bootstrap from "bootstrap";
 import { Link } from "react-router-dom";
 import logo from "../assets/img/logo.png";
 import Headers from "../components/Headers";
 import Sidebar from "../components/Sidebar";
+import DownloadTemplate from "../components/DownloadTemplate";
 
 const Grading = () => {
   return (
@@ -17,13 +20,18 @@ const Grading = () => {
             <div className="breadcrumbs-area d-flex justify-content-between">
               <h3>Grading Setup</h3>
               <div>
-                <button
-                  className="btn btn-purple modal-trigger mb-0"
-                  data-toggle="modal"
-                  data-target="#download"
-                >
-                  <i className="fas fa-download" /> Template
-                </button>
+              <button
+  className="btn btn-purple modal-trigger"
+  onClick={() => {
+    const modalElement = document.getElementById("download");
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }}
+>
+  <i className="fas fa-download" /> Template
+</button>
                 <button
                   className="btn btn-purple modal-trigger mb-0"
                   data-toggle="modal"
@@ -267,7 +275,7 @@ const Grading = () => {
         </div>
         {/* Page Area End Here */}
       </div>
-      <div
+      {/* <div
         className="modal fade"
         id="download"
         tabIndex={-1}
@@ -316,7 +324,9 @@ const Grading = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+
+      <DownloadTemplate/>
       <div
         className="modal fade"
         id="upload"

@@ -8,6 +8,7 @@ import Sidebar from "../components/Sidebar";
 import DownloadTemplate from "../components/ClassAddOn/DownloadTemplate";
 import AddNewFile from "../components/ClassAddOn/AddNewFile";
 import AddNewClass from "../components/ClassAddOn/AddNewClass";
+import * as bootstrap from "bootstrap";
 
 const Classes = () => {
   const [sortConfig, setSortConfig] = useState({ key: "id", direction: "asc" });
@@ -88,23 +89,33 @@ const Classes = () => {
                 </span>
               </div>
               <div>
-                <button
-                  className="btn btn-purple modal-trigger"
-                  data-toggle="modal"
-                  data-target="#download"
-                  onClick={() => {
-                    console.log("Template button clicked");
-                  }}
-                >
-                  <i className="fas fa-download" /> Template
-                </button>
-                <button
-                  className="btn btn-purple modal-trigger"
-                  data-toggle="modal"
-                  data-target="#upload"
-                >
-                  <i className="fas fa-upload" /> Upload
-                </button>
+              <button
+  className="btn btn-purple modal-trigger"
+  onClick={() => {
+    const modalElement = document.getElementById("download");
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }}
+>
+  <i className="fas fa-download" /> Template
+</button>
+
+
+<button
+  className="btn btn-purple modal-trigger"
+  onClick={() => {
+    const modalElement = document.getElementById("upload");
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }}
+>
+  <i className="fas fa-upload" /> Upload
+</button>
+
                 <button
                   className="btn btn-purple modal-trigger"
                   data-toggle="modal"
