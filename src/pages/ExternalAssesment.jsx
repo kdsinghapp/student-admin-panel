@@ -105,13 +105,10 @@ const ExternalAssesment = () => {
         <Headers />
         <div className="dashboard-page-one">
           <Sidebar />
-          {/* Sidebar Area End Here */}
           <div className="dashboard-content-one">
-            {/* Breadcubs Area Start Here */}
             <div className="breadcrumbs-area">
               <h3>External Assessments</h3>
             </div>
-            {/* Breadcubs Area End Here */}
             <div className="filter-bar grade">
               <div className="filter-group form-group">
                 <button className="btn btn-light">
@@ -135,29 +132,27 @@ const ExternalAssesment = () => {
                 </span>
               </div>
               <div>
-              <button
-  className="btn btn-purple modal-trigger"
-  onClick={() => {
-    const modalElement = document.getElementById("download");
-    if (modalElement) {
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();
-    }
-  }}
->
-  <i className="fas fa-download" /> Template
-</button>
-                {/* <button
-                  className="btn btn-purple modal-trigger mb-0"
-                  data-toggle="modal"
-                  data-target="#download"
-                >
-                  <i className="fas fa-download" /> Template
-                </button> */}
                 <button
                   className="btn btn-purple modal-trigger mb-0"
-                  data-toggle="modal"
-                  data-target="#upload"
+                  onClick={() => {
+                    const modalElement = document.getElementById("download");
+                    if (modalElement) {
+                      const modal = new bootstrap.Modal(modalElement);
+                      modal.show();
+                    }
+                  }}
+                >
+                  <i className="fas fa-download" /> Template
+                </button>
+                <button
+                  className="btn btn-purple modal-trigger mb-0"
+                  // onClick={() => {
+                  //   const modalElement = document.getElementById("upload");
+                  //   if (modalElement) {
+                  //     const modal = new bootstrap.Modal(modalElement);
+                  //     modal.show();
+                  //   }
+                  // }}
                 >
                   <i className="fas fa-upload" /> Upload
                 </button>

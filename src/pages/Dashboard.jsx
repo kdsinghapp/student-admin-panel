@@ -59,10 +59,10 @@ const Dashboard = () => {
   const [totalStats, setTotalStats] = useState(0);
 
   // Target numbers
-  const targetStudents = 40689;
-  const targetReports = 1005;
-  const targetSubjects = 100;
-  const targetStats = 2040;
+  const targetStudents = 0;
+  const targetReports = 1;
+  const targetSubjects = 2;
+  const targetStats = 3;
 
   // Animation duration in milliseconds
   const animationDuration = 2000; // 2 seconds

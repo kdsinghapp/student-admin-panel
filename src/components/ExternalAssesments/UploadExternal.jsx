@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const UploadExternal = () => {
+
+  const closeModal = () => {
+    const modalElement = document.getElementById("upload");
+    if (modalElement) {
+      const modal = window.bootstrap.Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+      }
+    }
+  };
+
   return (
     <div
       className="modal fade"
@@ -16,8 +29,8 @@ const UploadExternal = () => {
             <button
               type="button"
               className="close"
-              data-dismiss="modal"
               aria-label="Close"
+              onClick={closeModal}
             >
               <span aria-hidden="true">×</span>
             </button>
@@ -27,8 +40,8 @@ const UploadExternal = () => {
               <label style={{ cursor: "pointer" }}>
                 <input type="file" style={{ display: "none" }} />
                 <img src="assets/upload.png" alt="Upload Icon" />
-                <p>Drag &amp; Drop or Choose file to upload</p>
-                <span>CSV, Doc, pdf</span>
+                <p>Drag & Drop or Choose file to upload</p>
+                <span>CSV, Doc, PDF</span>
               </label>
             </div>
           </div>
@@ -40,15 +53,11 @@ const UploadExternal = () => {
               <button
                 type="button"
                 className="btn btn-outline"
-                data-dismiss="modal"
+                data-bs-dismiss="modal"
               >
                 Cancel
               </button>
-              <button
-                type="button"
-                className="btn btn-success"
-                onclick="openModal()"
-              >
+              <button type="button" className="btn btn-success">
                 Upload
               </button>
             </div>

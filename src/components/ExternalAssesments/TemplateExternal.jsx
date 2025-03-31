@@ -1,6 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const TemplateExternal = () => {
+  useEffect(() => {
+    const modalElement = document.getElementById("download");
+    if (modalElement) {
+      new bootstrap.Modal(modalElement);
+    }
+  }, []);
+
+  const closeModal = () => {
+    const modalElement = document.getElementById("download");
+    if (modalElement) {
+      const modal = bootstrap.Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+      }
+    }
+  };
+
   return (
     <div
       className="modal fade"
@@ -16,7 +33,7 @@ const TemplateExternal = () => {
             <button
               type="button"
               className="close"
-              data-dismiss="modal"
+              onClick={closeModal}
               aria-label="Close"
             >
               <span aria-hidden="true">×</span>

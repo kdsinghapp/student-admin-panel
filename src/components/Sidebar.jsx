@@ -1,9 +1,16 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/img/logo1.png";
 
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("userTokenStudent");
+    localStorage.removeItem("userStudentData");
+    navigate("/signin");
+  };
 
   return (
     <>
@@ -144,10 +151,10 @@ const Sidebar = () => {
                 location.pathname === "/signup" ? "active" : ""
               }`}
             >
-              <Link to="/signin" className="nav-link">
+              <button className="nav-link" onClick={handleLogout}>
                 <i className="flaticon-turn-off" />
                 <span>Log Out</span>
-              </Link>
+              </button>
             </li>
           </ul>
         </div>

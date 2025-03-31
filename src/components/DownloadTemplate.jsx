@@ -4,7 +4,6 @@ import * as bootstrap from "bootstrap";
 const DownloadTemplate = () => {
   
   useEffect(() => {
-    // Ensure Bootstrap modal is initialized
     const modalElement = document.getElementById("download");
     if (modalElement) {
       new bootstrap.Modal(modalElement);

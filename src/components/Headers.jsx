@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/img/logo.png";
 import admin from "../assets/img/figure/admin.jpg";
 
@@ -32,6 +32,14 @@ const Headers = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("userTokenStudent");
+    localStorage.removeItem("userStudentData");
+    navigate("/signin");
+  };
 
   return (
     <div className="navbar navbar-expand-md header-menu-one bg-light">
@@ -118,10 +126,10 @@ const Headers = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link to="/signin">
+                      <a onClick={handleLogout}>
                         <i className="flaticon-turn-off" />
                         Log Out
-                      </Link>
+                      </a>
                     </li>
                   </ul>
                 </div>
