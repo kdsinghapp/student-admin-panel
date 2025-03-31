@@ -13,10 +13,21 @@ import studentProg from "../assets/assets/icon/tabler_progress.png";
 import studentStat from "../assets/assets/icon/lets-icons_status.png";
 import studentEdit from "../assets/assets/icon/tabler_edit.png";
 import Chart from "chart.js/auto";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("userTokenStudent");
+    const userData = localStorage.getItem("userStudentData");
+
+    if (!token || !userData) {
+      navigate("/signin");
+    }
+  }, [navigate]);
 
   useEffect(() => {
     if (chartInstance.current) {

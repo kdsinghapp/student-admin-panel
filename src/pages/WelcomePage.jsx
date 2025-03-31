@@ -121,6 +121,7 @@ const WelcomePage = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   useEffect(() => {
     const token = localStorage.getItem("userTokenStudent");
     const userData = localStorage.getItem("userStudentData");
