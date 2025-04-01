@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://gradesphere.com/dev/gradesphere/api";
+const API_URL = "https://server-php-8-3.technorizen.com/gradesphere/api";
 
 export const signInAdmin = async (data) => {
   try {
