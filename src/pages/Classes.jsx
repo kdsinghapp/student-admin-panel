@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Headers from "../components/Headers";
 import fiList from "../assets/assets/icon/fi_list.png";
 import classList from "../assets/assets/icon/class.png";
@@ -9,20 +9,64 @@ import DownloadTemplate from "../components/ClassAddOn/DownloadTemplate";
 import AddNewFile from "../components/ClassAddOn/AddNewFile";
 import AddNewClass from "../components/ClassAddOn/AddNewClass";
 import * as bootstrap from "bootstrap";
+import {
+  deleteClassById,
+  getAllClasses,
+  updateClassById,
+} from "../utils/authApi";
+import Swal from "sweetalert2";
+import img1 from "../assets/assets/icon/circle-round.png";
 
 const Classes = () => {
   const [sortConfig, setSortConfig] = useState({ key: "id", direction: "asc" });
-  // const []
+  const [data, setData] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [editFormData, setEditFormData] = useState({ name: "" });
+  const [showModal, setShowModal] = useState(false);
+  const [className, setClassName] = useState("");
 
-  const [data, setData] = useState([
-    { id: 1010, name: "George Martin" },
-    { id: 1005, name: "Alice Smith" },
-    { id: 1008, name: "John Doe" },
-    { id: 1012, name: "Michael Brown" },
-    { id: 1002, name: "Emily White" },
-  ]);
+  const handleOpenModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
-  // Sorting function
+  const addClass = () => {
+    if (className.trim() === "") {
+      alert("Class name cannot be empty!");
+      return;
+    }
+
+    console.log("New Class:", className);
+    // Call API or update state to add the class
+    setClassName(""); // Reset input field after adding
+    handleCloseModal(); // Close modal after adding
+  };
+
+  const getClassData = async () => {
+    try {
+      const res = await getAllClasses();
+      if (res.status) {
+        setData(res.data);
+      }
+    } catch (error) {
+      console.error("Error fetching class data:", error);
+      if (error.message) {
+        console.error("Response Error:", error.response.data);
+        alert(
+          `Error: ${error.response.data.message || "Something went wrong"}`
+        );
+      } else if (error.request) {
+        console.error("Network Error:", error.request);
+        alert("Network error. Please check your internet connection.");
+      } else {
+        console.error("Unexpected Error:", error.message);
+        alert("An unexpected error occurred. Please try again.");
+      }
+    }
+  };
+
+  useEffect(() => {
+    getClassData();
+  }, []);
+
   const sortData = (key) => {
     let direction = "asc";
     if (sortConfig.key === key && sortConfig.direction === "asc") {
@@ -45,8 +89,65 @@ const Classes = () => {
         ? "fas fa-sort-up"
         : "fas fa-sort-down";
     }
-    return "fas fa-sort"; // Default state (unsorted)
+    return "fas fa-sort";
   };
+
+  const handleEditClick = (item) => {
+    setSelectedItem(item);
+    setEditFormData({ name: item.name });
+  };
+
+  const handleInputChange = (e) => {
+    setEditFormData({ ...editFormData, [e.target.name]: e.target.value });
+  };
+
+  const handleUpdate = async () => {
+    if (selectedItem) {
+      try {
+        const res = await updateClassById(selectedItem.id, editFormData);
+
+        setData((prevData) =>
+          prevData.map((item) =>
+            item.id === selectedItem.id ? { ...item, ...editFormData } : item
+          )
+        );
+        document.getElementById("closeEditModal").click();
+      } catch (error) {
+        console.error("Error updating class:", error);
+      }
+    }
+  };
+
+  const handleDelete = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          console.log(id);
+          const res = await deleteClassById(id);
+          setData((prevData) => prevData.filter((item) => item.id !== id));
+          Swal.fire("Deleted!", "The class has been deleted.", "success");
+        } catch (error) {
+          Swal.fire("Error!", "Failed to delete the class.", "error");
+        }
+      }
+    });
+  };
+
+  const handleCreateClass = async (e) => {
+    e.preventDefault();
+    console.log("className", className);
+  };
+
+  console.log("Data", data);
+
   return (
     <>
       <div id="wrapper" className="wrapper bg-ash">
@@ -55,14 +156,19 @@ const Classes = () => {
           <Sidebar />
           <div className="dashboard-content-one">
             <div className="breadcrumbs-area">
-              <h3>Class Lists</h3>
+              <h3 style={{ fontSize: "22px" }}>Class Lists</h3>
             </div>
             <div className="filter-bar">
               <div className="filter-group form-group filter-container mb-3">
                 <button className="btn btn-light">
                   <i className="fas fa-filter" />
                 </button>
-                <span className="btn">Filter By</span>
+                <span
+                  className="btn"
+                  style={{ fontSize: "14px", color: "#646464" }}
+                >
+                  Filter By
+                </span>
                 <input
                   type="text"
                   className="filter-input form-control"
@@ -82,47 +188,57 @@ const Classes = () => {
                   </button>
                 </div>
                 <select className="form-control">
-                  <option> Name</option>
+                  <option style={{ fontSize: "16px", color: "#646464" }}>
+                    {" "}
+                    Name
+                  </option>
                 </select>
-                <span className="reset-filter btn">
+                <span className="reset-filter btn" style={{ color: "red" }}>
                   <i className="fas fa-sync-alt" /> Reset Filter
                 </span>
               </div>
               <div>
-              <button
-  className="btn btn-purple modal-trigger"
-  onClick={() => {
-    const modalElement = document.getElementById("download");
-    if (modalElement) {
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();
-    }
-  }}
->
-  <i className="fas fa-download" /> Template
-</button>
-
-
-<button
-  className="btn btn-purple modal-trigger"
-  onClick={() => {
-    const modalElement = document.getElementById("upload");
-    if (modalElement) {
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();
-    }
-  }}
->
-  <i className="fas fa-upload" /> Upload
-</button>
-
                 <button
+                  className="btn btn-purple modal-trigger"
+                  onClick={() => {
+                    const modalElement = document.getElementById("download");
+                    if (modalElement) {
+                      const modal = new bootstrap.Modal(modalElement);
+                      modal.show();
+                    }
+                  }}
+                  style={{ color: "white", background: "#501b8d" }}
+                >
+                  <i className="fas fa-download" /> Template
+                </button>
+                <button
+                  className="btn btn-purple modal-trigger"
+                  onClick={() => {
+                    const modalElement = document.getElementById("upload");
+                    if (modalElement) {
+                      const modal = new bootstrap.Modal(modalElement);
+                      modal.show();
+                    }
+                  }}
+                  style={{ color: "white", background: "#501b8d" }}
+                >
+                  <i className="fas fa-upload" /> Upload
+                </button>
+                <button
+                  className="btn btn-purple modal-trigger"
+                  style={{ color: "white", background: "#501b8d" }}
+                  onClick={handleOpenModal}
+                >
+                  <i className="fas fa-plus" /> Add New
+                </button>
+                {/* <a
+                  href="#"
                   className="btn btn-purple modal-trigger"
                   data-toggle="modal"
                   data-target="#addclass"
                 >
                   <i className="fas fa-plus" /> Add New
-                </button>
+                </a> */}
               </div>
             </div>
             {/* Class Table Area Start Here */}
@@ -134,14 +250,23 @@ const Classes = () => {
                       <tr>
                         <th
                           onClick={() => sortData("id")}
-                          style={{ cursor: "pointer" }}
+                          style={{
+                            cursor: "pointer",
+                            fontSize: "15px",
+                            fontWeight: "500",
+                          }}
                         >
                           <img src={fiList} alt="Class ID" /> Class ID{" "}
                           <i className={getSortIcon("id")} />
                         </th>
                         <th
                           onClick={() => sortData("name")}
-                          style={{ width: "60%", cursor: "pointer" }}
+                          style={{
+                            width: "60%",
+                            cursor: "pointer",
+                            fontSize: "15px",
+                            fontWeight: "500",
+                          }}
                         >
                           <img src={classList} alt="Class Name" /> Class Name{" "}
                           <i className={getSortIcon("name")} />
@@ -152,23 +277,60 @@ const Classes = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {data.map((item, index) => (
-                        <tr key={index}>
-                          <td>{item.id}</td>
-                          <td>{item.name}</td>
-                          <td className="action-icons">
-                            <a href="#">
-                              <i className="fas fa-edit" />
-                            </a>
-                            <a href="#">
-                              <i className="fas fa-eye" />
-                            </a>
-                            <a href="#">
-                              <i className="fas fa-trash" />
-                            </a>
+                      {data.length > 0 ? (
+                        data.map((item, index) => (
+                          <tr key={index} style={{ lineHeight: "35px" }}>
+                            <td
+                              style={{
+                                cursor: "pointer",
+                                fontSize: "15px",
+                                color: "#646464",
+                              }}
+                            >
+                              {item.id}
+                            </td>
+                            <td
+                              style={{
+                                cursor: "pointer",
+                                fontSize: "13px",
+                                color: "#646464",
+                              }}
+                            >
+                              {item.name}
+                            </td>
+                            <td className="action-icons">
+                              <a
+                                href="#"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editModal"
+                                onClick={() => handleEditClick(item)}
+                              >
+                                <i className="fas fa-edit" />
+                              </a>
+                              <a
+                                href="#"
+                                data-bs-toggle="modal"
+                                data-bs-target="#viewModal"
+                                onClick={() => setSelectedItem(item)}
+                              >
+                                <i className="fas fa-eye" />
+                              </a>
+                              <a href="#" onClick={() => handleDelete(item.id)}>
+                                <i className="fas fa-trash" />
+                              </a>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            colSpan="3"
+                            style={{ textAlign: "center", padding: "10px" }}
+                          >
+                            No records found
                           </td>
                         </tr>
-                      ))}
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -177,6 +339,191 @@ const Classes = () => {
           </div>
         </div>
       </div>
+      {/* View Info Model */}
+      <div
+        className="modal fade"
+        id="viewModal"
+        tabIndex="-1"
+        aria-labelledby="viewModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5
+                className="modal-title"
+                id="viewModalLabel"
+                style={{ fontSize: "25px" }}
+              >
+                View Details
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <p style={{ fontSize: "14px" }}>Item ID: {selectedItem?.id}</p>
+              <p style={{ fontSize: "14px" }}>Name: {selectedItem?.name}</p>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+                style={{ fontSize: "12px" }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Edit Info Model */}
+      <div
+        className="modal fade"
+        id="editModal"
+        tabIndex="-1"
+        aria-labelledby="editModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5
+                className="modal-title"
+                id="editModalLabel"
+                style={{ fontSize: "25px" }}
+              >
+                Edit Item
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                id="closeEditModal"
+              ></button>
+            </div>
+            <div className="modal-body">
+              <label style={{ fontSize: "14px" }}>Name:</label>
+              <input
+                style={{ fontSize: "14px" }}
+                type="text"
+                className="form-control"
+                name="name"
+                value={editFormData.name}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+                style={{ fontSize: "12px" }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleUpdate}
+                style={{ fontSize: "12px" }}
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Create Info Model */}
+      {showModal && (
+        <div className="modal fade show d-block" tabIndex={-1} role="dialog">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" style={{ fontSize: "18px" }}>
+                  <img src={img1} alt="icon" /> Add New Class
+                </h5>
+                <button
+                  type="button"
+                  className="close"
+                  onClick={handleCloseModal}
+                >
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <div className="form-group">
+                  <label style={{ fontSize: "16px", color: "#646464" }}>
+                    Year Group
+                  </label>
+                  <select
+                    className="form-control"
+                    style={{
+                      fontSize: "16px",
+                      color: "#646464",
+                      border: "1px solid lightgrey",
+                    }}
+                  >
+                    <option>FSI</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label style={{ fontSize: "16px", color: "#646464" }}>
+                    Class Name
+                  </label>
+                  <div
+                    className="input-group mb-2"
+                    style={{
+                      fontSize: "16px",
+                      color: "#646464",
+                      border: "1px solid lightgrey",
+                    }}
+                  >
+                    <input
+                      type="text"
+                      className="form-control mr-3"
+                      value={className}
+                      onChange={(e) => setClassName(e.target.value)}
+                    />
+                    <div className="input-group-append">
+                      <button
+                        className="btn add-class text-dark ml-2"
+                        type="button"
+                        style={{ background: "lightgrey" }}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="modal-footer d-flex justify-content-between">
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={handleCloseModal}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={addClass}
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showModal && <div className="modal-backdrop fade show"></div>}
       <DownloadTemplate />
       <AddNewFile />
       <AddNewClass />

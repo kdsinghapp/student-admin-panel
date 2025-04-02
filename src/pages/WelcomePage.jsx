@@ -150,12 +150,12 @@ const WelcomePage = () => {
         navigate("/");
       } else {
         setError(res.message || "Login failed!");
-        Swal.fire("Error!", res.message || "Login failed!", "error");
+        // Swal.fire("Error!", res.message || "Login failed!", "error");
       }
     } catch (error) {
       console.error("Login Error:", error);
       setError("Something went wrong. Please try again.");
-      Swal.fire("Error!", "Something went wrong!", "error");
+      // Swal.fire("Error!", "Something went wrong!", "error");
     } finally {
       setLoading(false);
     }
@@ -208,7 +208,7 @@ const WelcomePage = () => {
                   <div className="checkbox form-group clearfix">
                     <label className="form-check-label">
                       By continuing, you acknowledge that you have read,
-                      understood, and agreed to Mansha's{" "}
+                      understood, and agreed to{" "}
                       <a href="#">Terms and Conditions</a> and{" "}
                       <a href="#">Privacy Policy</a>.
                     </label>
